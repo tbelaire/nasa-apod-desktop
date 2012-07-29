@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 Copyright (c) 2012 David Drake
-
+Modified for OSX by Theo Belaire
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -16,11 +16,14 @@ limitations under the License.
 
 
 nasa_apod_desktop.py
-https://github.com/randomdrake/nasa-apod-desktop
+https://github.com/TyrGodOfWar/nasa-apod-desktop
 
 Written/Modified by David Drake
 http://randomdrake.com 
 http://twitter.com/randomdrake 
+
+Modified for OSX by Theo Belaire 
+I don't have a website yet 
 
 Based on apodbackground: http://sourceforge.net/projects/apodbackground/
 Which, is based on: http://0chris.com/nasa-image-day-script-python.html
@@ -30,27 +33,21 @@ Which, is based on: http://0chris.com/nasa-image-day-script-python.html
 -Added debug lines
 -Check to see if file already exists before attempting download
 -Saving as PNG instead of JPG for improved quality
+-Removed scaling, as OSX handles that for you when you set it as a desktop background
 
-
-Tested on Ubuntu 12.04
 
 
 DESCRIPTION
 1) Grabs the latest image of the day from NASA (http://apod.nasa.gov/apod/). 
-2) Resizes the image to the given resolution.
-3) Sets the image as your desktop.
-4) Adds the image to a list of images that will be cycled through.
+2) Sets the image as your desktop.
 
 
 INSTALLATION
-Ensure you have Python installed (default for Ubuntu) and the python-imaging package:
-sudo apt-get install python-imaging
+Ensure you have Python installed, which is required for OSX.
 
 Set your resolution variables and your download path (make sure it's writeable):
 '''
-DOWNLOAD_PATH = '/home/randomdrake/backgrounds/'
-RESOLUTION_X = 1680
-RESOLUTION_Y = 1050
+DOWNLOAD_PATH = '/Users/theobelaire/backgrounds/'
 ''' 
 
 RUN AT STARTUP
@@ -69,12 +66,15 @@ import urllib
 import urllib2
 import re
 import os
-from PIL import Image
+#from PIL import Image
 from sys import stdout
+
+from appscript import app, mactypes
+
 
 # Configurable settings:
 NASA_APOD_SITE = 'http://apod.nasa.gov/apod/'
-SHOW_DEBUG = False
+SHOW_DEBUG = True
 
 def download_site(url):
     ''' Download HTML of the site'''
@@ -120,20 +120,20 @@ def get_image(text):
 
     return save_to
 
-def resize_image(filename):
-    ''' Resizes the image to the provided dimensions '''
-    if SHOW_DEBUG:
-        print "Opening local image"
-
-    image = Image.open(filename)
-    if SHOW_DEBUG:
-        print "Resizing the image to", RESOLUTION_X, 'x', RESOLUTION_Y
-    image = image.resize((RESOLUTION_X, RESOLUTION_Y), Image.ANTIALIAS)
-
-    if SHOW_DEBUG:
-        print "Saving the image to", filename
-    fhandle = open(filename, 'w')
-    image.save(fhandle, 'PNG')
+#def resize_image(filename):
+    #''' Resizes the image to the provided dimensions '''
+    #if SHOW_DEBUG:
+        #print "Opening local image"
+#
+    #image = Image.open(filename)
+    #if SHOW_DEBUG:
+        #print "Resizing the image to", RESOLUTION_X, 'x', RESOLUTION_Y
+    #image = image.resize((RESOLUTION_X, RESOLUTION_Y), Image.ANTIALIAS)
+#
+    #if SHOW_DEBUG:
+        #print "Saving the image to", filename
+    #fhandle = open(filename, 'w')
+    #image.save(fhandle, 'PNG')
 
 def set_gnome_wallpaper(file_path):
     ''' Sets the new image as the wallpaper '''
@@ -142,6 +142,13 @@ def set_gnome_wallpaper(file_path):
     command = "gsettings set org.gnome.desktop.background picture-uri file://" + file_path
     status, output = commands.getstatusoutput(command)
     return status
+
+def set_OSX_wallpaper(file_path):
+    ''' Sets the new image as the wallpaper '''
+    if SHOW_DEBUG:
+        print "Setting the wallpaper"
+    app('Finder').desktop_picture.set(mactypes.File(file_path))
+
 
 def print_download_status(block_count, block_size, total_size):
     written_size = human_readable_size(block_count * block_size)
@@ -172,10 +179,11 @@ if __name__ == '__main__':
     filename = get_image(site_contents)
 
     # Resize the image
-    resize_image(filename)
+    #resize_image(filename)
 
     # Set the wallpaper
-    status = set_gnome_wallpaper(filename)
+    #status = set_gnome_wallpaper(filename)
+    set_OSX_wallpaper(filename)
     if SHOW_DEBUG:
         print "Finished!"
 

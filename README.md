@@ -46,6 +46,10 @@ Open-source and free for use.
 Author:
 =====
 David Drake 
-Theo Belaire
 
 [@randomdrake](https://twitter.com/randomdrake) | [http://randomdrake.com](http://randomdrake.com) | [LinkedIn](http://www.linkedin.com/pub/david-drake/52/247/465)
+
+
+Modifier:
+=====
+Theo Belaire

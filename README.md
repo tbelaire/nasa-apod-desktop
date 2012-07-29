@@ -6,7 +6,7 @@ Python Script to Download the NASA APOD and Set it as Your Background for OSX
 
 About:
 =====
-The popular NASA Astronomy Picture of the Day produces wonderful images that make for a great desktop background. This script will download the NASA APOD and set it as your background in Ubuntu.
+The popular NASA Astronomy Picture of the Day produces wonderful images that make for a great desktop background. This script will download the NASA APOD and set it as your background in OSX.
 
 ![NASA APOD Example](http://randomdrake.com/nasa_apod.jpg "An example of a NASA APOD image.")
 

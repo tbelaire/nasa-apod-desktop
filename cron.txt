@@ -1,2 +1,0 @@
-0 0 * * * /User/theobelaire/github/nasa-apod-desktop/nasa_apod_desktop.py > /dev/null
-

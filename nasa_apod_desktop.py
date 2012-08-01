@@ -44,23 +44,12 @@ DESCRIPTION
 
 INSTALLATION
 Ensure you have Python installed, which is required for OSX.
-
-Set your resolution variables and your download path (make sure it's writeable):
+Edit the plist file to have the proper path to the python script.
+Move the plist file into ~/Library/LaunchAgents/ folder.
+Edit the following path to somewhere on your computer that is writable.
 '''
 DOWNLOAD_PATH = '/Users/theobelaire/backgrounds/'
-''' 
 
-RUN AT STARTUP
-To have this run whenever you startup your computer, perform the following steps:
-1) Click on the settings button (cog in top right)
-2) Select "Startup Applications..."
-3) Click the "Add" button
-4) Enter the following:
-Name: NASA APOD Desktop
-Command: python /path/to/nasa_apod_desktop.py
-Comment: Downloads the latest NASA APOD and sets it as the background.
-5) Click on the "Add" button
-'''
 import commands
 import urllib
 import urllib2
@@ -69,7 +58,7 @@ import os
 #from PIL import Image
 from sys import stdout
 
-from appscript import app, mactypes
+from appscript import app, mactypes, its
 
 
 # Configurable settings:
@@ -148,6 +137,15 @@ def set_OSX_wallpaper(file_path):
     if SHOW_DEBUG:
         print "Setting the wallpaper"
     app('Finder').desktop_picture.set(mactypes.File(file_path))
+
+def set_all_OSX_wallpapers(file_path):
+    ''' Sets the new image as the wallpaper for all moniters.  Untested. If someone want to ship me a moniter I'd be happy to test it though... '''
+
+    se = app('System Events')
+    desktops = se.desktops.display_name.get()
+    for d in desktops:
+        desk = se.desktops[its.display_name == d]
+        desk.picture.set(mactypes.File(file_path))
 
 
 def print_download_status(block_count, block_size, total_size):

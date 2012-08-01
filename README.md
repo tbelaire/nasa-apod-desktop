@@ -15,18 +15,21 @@ http://en.wikipedia.org/wiki/Astronomy_Picture_of_the_Day
 http://apod.nasa.gov/apod/astropix.html
 
 Tested on, OSX 10.7.4
-During testing, it just sets the background for the space the terminal is on when it is run.  I have no idea how this will interact with cron.  I'll find out over the next few days.
+During testing, it just sets the backgroud for the space you happen to be on at 6AM, or when the computer unsleeps next.
+
 
 Development:
 =====
-I just modified it to work on OSX, and Commented out the use of PIL and the resizing of the image, as OSX can deal with that itself.
+I just modified it to work on OSX, and commented out the use of PIL and the resizing of the image, as OSX can deal with that itself.
+Now I've learned how to set a up a launchd plist file to make it run once a day.
 
 
 Installation:
 =====
 * Place the file wherever you like and chmod +x it to make it executable
 * Set the defaults in the file 
-* Edit cron.txt to properly reference the file, and adjust the time at which it runs if you want.  (First number is minutes, next is hours.)
+* Move net.belaire.nasa_apod_desktop.plist to ~/Library/LaunchAgents
+* Run 'launchdctl load ~/Library/LaunchAgents/net.belaire.nasa_apod_desktop.plist'.
 
 To Do:
 =====
